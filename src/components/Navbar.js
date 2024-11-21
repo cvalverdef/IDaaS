@@ -1,15 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from '../logo.svg';
 
 const Navbar = () => {
   return (
     <nav className="bg-primary text-white shadow-md p-4">
       <div className="container mx-auto flex justify-between items-center">
-        {/* Logo */}
-        <div className="flex items-center">
-          <img src="/path/to/logo.png" alt="IDaaS Logo" className="h-8 w-8 mr-2" />
+        {/* Logo and Text Redirect to Home */}
+        <Link to="/" className="flex items-center">
+        <img src={logo} alt="IDaaS Logo" className="h-8 w-8 mr-2" />
           <h1 className="text-lg font-bold">IDaaS</h1>
-        </div>
+        </Link>
 
         {/* Navigation Links */}
         <ul className="hidden md:flex space-x-6">
