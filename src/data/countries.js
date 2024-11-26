@@ -1,0 +1,196 @@
+const countries = [
+    {
+      name: "Afghanistan",
+      dialCode: "+93",
+      flag: "🇦🇫",
+      states: [],
+      zipMask: "",
+    },
+    {
+      name: "Albania",
+      dialCode: "+355",
+      flag: "🇦🇱",
+      states: [],
+      zipMask: "",
+    },
+    {
+      name: "Algeria",
+      dialCode: "+213",
+      flag: "🇩🇿",
+      states: [],
+      zipMask: "",
+    },
+    {
+      name: "Andorra",
+      dialCode: "+376",
+      flag: "🇦🇩",
+      states: [],
+      zipMask: "",
+    },
+    {
+      name: "Angola",
+      dialCode: "+244",
+      flag: "🇦🇴",
+      states: [],
+      zipMask: "",
+    },
+    {
+      name: "Argentina",
+      dialCode: "+54",
+      flag: "🇦🇷",
+      states: [
+        { name: "Buenos Aires", cities: ["Buenos Aires", "La Plata"] },
+        { name: "Córdoba", cities: ["Córdoba", "Villa Carlos Paz"] },
+      ],
+      zipMask: "X0000XXX",
+    },
+    {
+      name: "Australia",
+      dialCode: "+61",
+      flag: "🇦🇺",
+      states: [
+        { name: "New South Wales", cities: ["Sydney", "Newcastle"] },
+        { name: "Victoria", cities: ["Melbourne", "Geelong"] },
+      ],
+      zipMask: "0000",
+    },
+    {
+      name: "Austria",
+      dialCode: "+43",
+      flag: "🇦🇹",
+      states: [],
+      zipMask: "",
+    },
+    {
+      name: "Brazil",
+      dialCode: "+55",
+      flag: "🇧🇷",
+      states: [
+        { name: "São Paulo", cities: ["São Paulo", "Campinas"] },
+        { name: "Rio de Janeiro", cities: ["Rio de Janeiro", "Niterói"] },
+      ],
+      zipMask: "00000-000",
+    },
+    {
+      name: "Canada",
+      dialCode: "+1",
+      flag: "🇨🇦",
+      states: [
+        { name: "Ontario", cities: ["Toronto", "Ottawa"] },
+        { name: "Quebec", cities: ["Montreal", "Quebec City"] },
+      ],
+      zipMask: "A0A 0A0",
+    },
+    {
+      name: "China",
+      dialCode: "+86",
+      flag: "🇨🇳",
+      states: [
+        { name: "Beijing", cities: ["Beijing"] },
+        { name: "Shanghai", cities: ["Shanghai"] },
+      ],
+      zipMask: "000000",
+    },
+    {
+      name: "France",
+      dialCode: "+33",
+      flag: "🇫🇷",
+      states: [],
+      zipMask: "00000",
+    },
+    {
+      name: "Germany",
+      dialCode: "+49",
+      flag: "🇩🇪",
+      states: [],
+      zipMask: "00000",
+    },
+    {
+      name: "India",
+      dialCode: "+91",
+      flag: "🇮🇳",
+      states: [
+        { name: "Maharashtra", cities: ["Mumbai", "Pune"] },
+        { name: "Karnataka", cities: ["Bangalore", "Mysore"] },
+      ],
+      zipMask: "000000",
+    },
+    {
+      name: "Japan",
+      dialCode: "+81",
+      flag: "🇯🇵",
+      states: [],
+      zipMask: "000-0000",
+    },
+    {
+      name: "Mexico",
+      dialCode: "+52",
+      flag: "🇲🇽",
+      states: [
+        { name: "Mexico City", cities: ["Mexico City"] },
+        { name: "Jalisco", cities: ["Guadalajara"] },
+      ],
+      zipMask: "00000",
+    },
+    {
+      name: "Russia",
+      dialCode: "+7",
+      flag: "🇷🇺",
+      states: [],
+      zipMask: "000000",
+    },
+    {
+      name: "South Africa",
+      dialCode: "+27",
+      flag: "🇿🇦",
+      states: [],
+      zipMask: "0000",
+    },
+    {
+      name: "Spain",
+      dialCode: "+34",
+      flag: "🇪🇸",
+      states: [
+        { name: "Madrid", cities: ["Madrid", "Alcalá de Henares"] },
+        { name: "Barcelona", cities: ["Barcelona", "Terrassa"] },
+      ],
+      zipMask: "00000",
+    },
+    {
+      name: "Sweden",
+      dialCode: "+46",
+      flag: "🇸🇪",
+      states: [
+        { name: "Stockholm", cities: ["Stockholm", "Solna"] },
+        { name: "Gothenburg", cities: ["Gothenburg", "Mölndal"] },
+      ],
+      zipMask: "000 00",
+    },
+    {
+      name: "United Kingdom",
+      dialCode: "+44",
+      flag: "🇬🇧",
+      states: [],
+      zipMask: "A0A 0AA",
+    },
+    {
+      name: "United States",
+      dialCode: "+1",
+      flag: "🇺🇸",
+      states: [
+        { name: "California", cities: ["Los Angeles", "San Francisco"] },
+        { name: "New York", cities: ["New York City", "Buffalo"] },
+      ],
+      zipMask: "00000",
+    },
+    {
+      name: "Zimbabwe",
+      dialCode: "+263",
+      flag: "🇿🇼",
+      states: [],
+      zipMask: "",
+    },
+  ];
+  
+  export default countries;
+  
