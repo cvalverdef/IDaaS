@@ -1,4 +1,15 @@
-// src/api.js
+import axios from "axios";
+
+// Use environment variable for flexibility
+const API_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api";
+
+// Create Axios instance
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 // Function to establish WebSocket connection
 const connectWebSocket = () => {
@@ -25,86 +36,35 @@ const connectWebSocket = () => {
 // Function to create an account
 const createAccount = async (formData) => {
   try {
-    const response = await fetch("http://localhost:5000/api/users/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error creating account: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data;
+    const response = await axios.post(`${API_URL}/users/create`, formData);
+    return response.data;
   } catch (error) {
-    console.error("Error in createAccount:", error);
+    console.error("Error in createAccount:", error.response?.data || error.message);
     throw error;
   }
 };
 
-// Function to fetch users
-const fetchUsers = async () => {
+// Function to login a user
+const loginUser = async (formData) => {
   try {
-    const response = await fetch("http://localhost:5000/api/users");
-    if (!response.ok) {
-      throw new Error(`Error fetching users: ${response.statusText}`);
-    }
-    const data = await response.json();
-    return data;
+    const response = await axios.post(`${API_URL}/users/login`, formData);
+    return response.data;
   } catch (error) {
-    console.error("Error in fetchUsers:", error);
+    console.error("Error in loginUser:", error.response?.data || error.message);
     throw error;
   }
 };
 
-// Function to update KYC status
-const updateKYCStatus = async (id, status) => {
+// Function to check KYC status
+const checkKYC = async (formData) => {
   try {
-    const response = await fetch(`http://localhost:5000/api/users/${id}/kyc`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ status }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error updating KYC status: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data;
+    const response = await axios.post(`${API_URL}/users/kyc`, formData);
+    return response.data;
   } catch (error) {
-    console.error("Error in updateKYCStatus:", error);
+    console.error("Error in checkKYC:", error.response?.data || error.message);
     throw error;
   }
 };
 
-// Function to upload a document
-const uploadDocument = async (id, documentPath) => {
-  try {
-    const response = await fetch(`http://localhost:5000/api/users/${id}/upload`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ documentPath }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error uploading document: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error in uploadDocument:", error);
-    throw error;
-  }
-};
-
-// Export functions for use in other components
-export { connectWebSocket, createAccount, fetchUsers, updateKYCStatus, uploadDocument };
+// Export all API functions
+export { api, createAccount, loginUser, checkKYC, connectWebSocket };
