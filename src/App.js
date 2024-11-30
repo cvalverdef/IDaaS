@@ -14,6 +14,7 @@ import ManageRoles from "./pages/ManageRoles";
 import HomeLoggedIn from './pages/HomeLoggedIn';
 import HomeNotLoggedIn from './pages/HomeNotLoggedIn';
 import Register from './pages/Register';
+import Account from "./pages/Account";
 // import Login from './pages/Login';
 // import ForgotPassword from './pages/ForgotPassword';
 // import ResetPassword from './pages/ResetPassword';
@@ -30,7 +31,7 @@ const App = () => {
   // Mock user object
   const user = {
     name: "Superadmin User", // Replace with actual user data from authentication system
-    isSuperAdmin: false, // Set to false to test non-superadmin views
+    isSuperAdmin: true, // Set to false to test non-superadmin views
   };
 
   return (
@@ -47,6 +48,7 @@ const App = () => {
             <Route path="/home" element={<HomeLoggedIn />} />
             <Route path="/home-not-logged-in" element={<HomeNotLoggedIn />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/account" element={<Account />} />;
             {/* Superadmin Routes */}
             {user.isSuperAdmin && (
               <>
