@@ -36,13 +36,24 @@ const connectWebSocket = () => {
 // Function to create an account
 const createAccount = async (formData) => {
   try {
-    const response = await axios.post(`${API_URL}/users/create`, formData);
+    const response = await axios.post(`${API_URL}/account/create`, formData);
     return response.data;
   } catch (error) {
     console.error("Error in createAccount:", error.response?.data || error.message);
     throw error;
   }
 };
+
+// // Create account
+// export const createAccount = async (data) => {
+//   try {
+//     const response = await api.post("/account/create", data);
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error in createAccount:", error.response?.data || error.message);
+//     throw error;
+//   }
+// };
 
 // Function to login a user
 const loginUser = async (formData) => {

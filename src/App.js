@@ -15,6 +15,7 @@ import HomeLoggedIn from './pages/HomeLoggedIn';
 import HomeNotLoggedIn from './pages/HomeNotLoggedIn';
 import Register from './pages/Register';
 import Account from "./pages/Account";
+import NeuronAccountManager from './components/NeuronAccountManager'; // Add NeuronAccountManager
 // import Login from './pages/Login';
 // import ForgotPassword from './pages/ForgotPassword';
 // import ResetPassword from './pages/ResetPassword';
@@ -49,6 +50,7 @@ const App = () => {
             <Route path="/home-not-logged-in" element={<HomeNotLoggedIn />} />
             <Route path="/register" element={<Register />} />
             <Route path="/account" element={<Account />} />;
+            <Route path="/neuron-manager" element={<NeuronAccountManager />} /> {/* Add route for NeuronAccountManager */}
             {/* Superadmin Routes */}
             {user.isSuperAdmin && (
               <>

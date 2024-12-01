@@ -10,6 +10,7 @@ const api = axios.create({
   },
 });
 
+
 export const registerUser = async (data) => {
   return api.post("/users/register", data);
 };
