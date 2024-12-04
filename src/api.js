@@ -1,42 +1,52 @@
 import axios from "axios";
+import crypto from "crypto-browserify";
 
-// Use environment variable for flexibility
 const API_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api";
 
-// Create Axios instance
-const api = axios.create({
-  baseURL: API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+// Function to calculate the signature
+const calculateSignature = (data, secret) => {
+  const { PUserName, Host, PEMail, PPhoneNr, PPassword, PApiKey, PNonce } = data;
+  const key = Buffer.from(secret, "utf-8");
 
-// Function to establish WebSocket connection
-const connectWebSocket = () => {
-  const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-  const wsUri = `${protocol}://lab.tagroot.io/ClientEventsWS`;
+  let s = `${PUserName}:${Host}:${PEMail}`;
+  if (PPhoneNr) {
+    s += `:${PPhoneNr}`;
+  }
+  s += `:${PPassword}:${PApiKey}:${PNonce}`;
 
-  const ws = new WebSocket(wsUri);
-
-  ws.onopen = () => {
-    console.log("WebSocket connection established.");
-  };
-
-  ws.onerror = (error) => {
-    console.error("WebSocket error:", error);
-  };
-
-  ws.onmessage = (message) => {
-    console.log("WebSocket message received:", message.data);
-  };
-
-  return ws;
+  const dataBuffer = Buffer.from(s, "utf-8");
+  const hmac = crypto.createHmac("sha256", key).update(dataBuffer).digest("base64");
+  return hmac;
 };
 
-// Function to create an account
+// Create account
 const createAccount = async (formData) => {
+  const PApiKey = "YOUR_API_KEY"; // Replace with your API key
+  const Secret = "YOUR_SECRET"; // Replace with your secret
+  const Host = "lab.tagroot.io"; // Host for the Neuron API
+  const PNonce = new Date().getTime();
+
+  const signatureData = {
+    PUserName: formData.fullName,
+    Host,
+    PEMail: formData.email,
+    PPhoneNr: formData.mobile,
+    PPassword: formData.password,
+    PApiKey,
+    PNonce,
+  };
+
+  const PSignature = calculateSignature(signatureData, Secret);
+
+  const requestData = {
+    ...formData,
+    PApiKey,
+    PNonce,
+    PSignature,
+  };
+
   try {
-    const response = await axios.post(`${API_URL}/account/create`, formData);
+    const response = await axios.post(`${API_URL}/account/create`, requestData);
     return response.data;
   } catch (error) {
     console.error("Error in createAccount:", error.response?.data || error.message);
@@ -44,38 +54,4 @@ const createAccount = async (formData) => {
   }
 };
 
-// // Create account
-// export const createAccount = async (data) => {
-//   try {
-//     const response = await api.post("/account/create", data);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error in createAccount:", error.response?.data || error.message);
-//     throw error;
-//   }
-// };
-
-// Function to login a user
-const loginUser = async (formData) => {
-  try {
-    const response = await axios.post(`${API_URL}/users/login`, formData);
-    return response.data;
-  } catch (error) {
-    console.error("Error in loginUser:", error.response?.data || error.message);
-    throw error;
-  }
-};
-
-// Function to check KYC status
-const checkKYC = async (formData) => {
-  try {
-    const response = await axios.post(`${API_URL}/users/kyc`, formData);
-    return response.data;
-  } catch (error) {
-    console.error("Error in checkKYC:", error.response?.data || error.message);
-    throw error;
-  }
-};
-
-// Export all API functions
-export { api, createAccount, loginUser, checkKYC, connectWebSocket };
+export { createAccount };

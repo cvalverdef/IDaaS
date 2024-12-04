@@ -10,116 +10,45 @@ const Register = () => {
     state: "",
     zipCode: "",
   });
-
-  const [states, setStates] = useState([]); // Define states here
+  const [states, setStates] = useState([]);
 
   useEffect(() => {
     if (formData.countryCode) {
-      const selectedCountry = countries.find(
-        (country) => country.dialCode === formData.countryCode
-      );
-      if (selectedCountry) {
-        setStates(selectedCountry.states || []); // Use setStates properly here
-      }
+      const selectedCountry = countries.find((c) => c.dialCode === formData.countryCode);
+      setStates(selectedCountry ? selectedCountry.states || [] : []);
     }
   }, [formData.countryCode]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (window.Agent) {
-      window.Agent.register(formData, (response) => {
-        console.log("Registration Response:", response);
-        if (response.success) {
-          alert("Registration successful!");
-        } else {
-          alert("Registration failed.");
-        }
-      });
-    } else {
-      console.error("Agent.js is not loaded.");
-    }
+    console.log("Registration data:", formData);
   };
 
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-6">Register</h1>
+    <div>
+      <h1>Register</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>First Name *</label>
-          <input
-            type="text"
-            value={formData.firstName}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, firstName: e.target.value }))
-            }
-          />
-        </div>
-        <div>
-          <label>Last Name *</label>
-          <input
-            type="text"
-            value={formData.lastName}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, lastName: e.target.value }))
-            }
-          />
-        </div>
-        <div>
-          <label>Email *</label>
-          <input
-            type="email"
-            value={formData.email}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, email: e.target.value }))
-            }
-          />
-        </div>
-        <div>
-          <label>Country Code *</label>
-          <select
-            value={formData.countryCode}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, countryCode: e.target.value }))
-            }
-          >
-            <option value="">Select Country</option>
-            {countries.map((country) => (
-              <option key={country.dialCode} value={country.dialCode}>
-                {country.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label>State</label>
-          <select
-            value={formData.state}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, state: e.target.value }))
-            }
-          >
-            <option value="">Select State</option>
-            {states.map((state) => (
-              <option key={state} value={state}>
-                {state}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label>ZIP Code *</label>
-          <input
-            type="text"
-            value={formData.zipCode}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, zipCode: e.target.value }))
-            }
-          />
-        </div>
-        <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded">
-          Register
-        </button>
+        <input type="text" name="firstName" placeholder="First Name" onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} />
+        <input type="text" name="lastName" placeholder="Last Name" onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} />
+        <input type="email" name="email" placeholder="Email" onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+        <select name="countryCode" onChange={(e) => setFormData({ ...formData, countryCode: e.target.value })}>
+          <option value="">Select Country</option>
+          {countries.map((country) => (
+            <option key={country.dialCode} value={country.dialCode}>
+              {country.name}
+            </option>
+          ))}
+        </select>
+        <select name="state" onChange={(e) => setFormData({ ...formData, state: e.target.value })}>
+          <option value="">Select State</option>
+          {states.map((state) => (
+            <option key={state} value={state}>
+              {state}
+            </option>
+          ))}
+        </select>
+        <input type="text" name="zipCode" placeholder="ZIP Code" onChange={(e) => setFormData({ ...formData, zipCode: e.target.value })} />
+        <button type="submit">Register</button>
       </form>
     </div>
   );

@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { createAccount } from "../api";
 
 const Account = () => {
-  const [formData, setFormData] = useState({ fullName: "", email: "", password: "", mobile: "" });
+  const [formData, setFormData] = useState({
+    PUserName: "",
+    PEMail: "",
+    PPassword: "",
+    PPhoneNr: "",
+  });
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
@@ -12,8 +17,9 @@ const Account = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await createAccount(formData);
+      const result = await createAccount(formData);
       setMessage("Account created successfully!");
+      console.log(result);
     } catch (error) {
       setMessage("Failed to create account. Please try again.");
     }
@@ -24,10 +30,37 @@ const Account = () => {
       <h1>Create Account</h1>
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
-        <input type="text" name="fullName" placeholder="Full Name" onChange={handleChange} />
-        <input type="email" name="email" placeholder="Email" onChange={handleChange} />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} />
-        <input type="text" name="mobile" placeholder="Mobile" onChange={handleChange} />
+        <input
+          type="text"
+          name="PUserName"
+          placeholder="Username"
+          value={formData.PUserName}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="email"
+          name="PEMail"
+          placeholder="Email"
+          value={formData.PEMail}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          name="PPassword"
+          placeholder="Password"
+          value={formData.PPassword}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="PPhoneNr"
+          placeholder="Phone Number (Optional)"
+          value={formData.PPhoneNr}
+          onChange={handleChange}
+        />
         <button type="submit">Create Account</button>
       </form>
     </div>

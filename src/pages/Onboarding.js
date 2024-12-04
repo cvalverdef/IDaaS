@@ -1,49 +1,48 @@
 import React, { useState, useEffect } from "react";
 
 const Onboarding = () => {
-  const [users, setUsers] = useState([]); // Initialize with an empty array
+  const [users, setUsers] = useState([
+    { id: 1, name: "User A", status: "Pending" },
+    { id: 2, name: "User B", status: "Approved" },
+  ]);
   const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
-    if (window.WebSocket) {
-      const socket = new WebSocket("wss://lab.tagroot.io/ClientEventsWS");
+    const socket = new WebSocket("wss://lab.tagroot.io/ClientEventsWS");
 
-      socket.onopen = () => console.log("WebSocket connected.");
-      socket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        console.log("WebSocket message received:", data);
+    socket.onopen = () => console.log("WebSocket connected.");
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === "KYC_UPDATE") {
+        setUsers((prev) =>
+          prev.map((user) =>
+            user.id === data.userId ? { ...user, status: data.status } : user
+          )
+        );
+      }
+    };
+    socket.onclose = () => console.log("WebSocket disconnected.");
 
-        // Handle KYC updates
-        if (data.type === "KYC_UPDATE") {
-          setUsers((prev) =>
-            prev.map((user) =>
-              user.id === data.userId ? { ...user, status: data.status } : user
-            )
-          );
-        }
-      };
-
-      socket.onerror = (error) => console.error("WebSocket error:", error);
-      socket.onclose = () => console.log("WebSocket disconnected.");
-
-      return () => socket.close(); // Clean up on component unmount
-    } else {
-      console.error("WebSocket is not supported in this browser.");
-    }
+    return () => socket.close();
   }, []);
 
   return (
     <div>
       <h1>Onboarding</h1>
-      <div>
+      <ul>
         {users.map((user) => (
-          <div key={user.id}>
-            <p>
-              {user.name} - Status: {user.status}
-            </p>
-          </div>
+          <li key={user.id} onClick={() => setSelectedUser(user)}>
+            {user.name} - Status: {user.status}
+          </li>
         ))}
-      </div>
+      </ul>
+      {selectedUser && (
+        <div style={{ marginTop: "20px", border: "1px solid #ccc", padding: "10px" }}>
+          <h2>Selected User Details</h2>
+          <p><strong>Name:</strong> {selectedUser.name}</p>
+          <p><strong>Status:</strong> {selectedUser.status}</p>
+        </div>
+      )}
     </div>
   );
 };
