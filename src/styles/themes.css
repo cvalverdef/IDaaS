@@ -1,0 +1,14 @@
+:root {
+    --theme-color-primary: #007bff;
+    --theme-color-secondary: #6c757d;
+    --theme-font: 'Inter', sans-serif;
+}
+
+body {
+    font-family: var(--theme-font);
+}
+
+.navbar {
+    background-color: var(--theme-color-primary);
+    color: white;
+}
