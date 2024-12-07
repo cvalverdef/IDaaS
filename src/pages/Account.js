@@ -12,7 +12,7 @@ const Account = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await createAccount(formData);
+      await createAccount(formData);
       setMessage("Account created successfully!");
     } catch (error) {
       setMessage("Failed to create account. Please try again.");

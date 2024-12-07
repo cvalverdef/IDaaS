@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const Onboarding = () => {
   const [users, setUsers] = useState([]); // Initialize with an empty array
-  const [selectedUser, setSelectedUser] = useState(null);
+  // const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     if (window.WebSocket) {
