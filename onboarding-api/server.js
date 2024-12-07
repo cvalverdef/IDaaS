@@ -1,23 +1,66 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const userRoutes = require("./routes/users");
-
-require("dotenv").config();
-
+const fetch = require("node-fetch"); 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const userRouter = require("./routes/users")
 
-// Middleware
-app.use(cors({
-  origin: "*", //  allow all origins
-}));
+app.use(cors());
 app.use(bodyParser.json());
+app.use("/api", userRouter)
+const port = process.env.PORT || 5000;
 
-// Routes
-app.use("/api/users", userRoutes);
+// Verify account route
+app.post("/verify-account", async (req, res) => {
+  const { confirmationCodeSms, confirmationCodeEmail, phoneNr, email } = req.body;
+  const token = req.headers["x-token"]
+  
+  if (!confirmationCodeSms || !confirmationCodeEmail) {
+    return res.status(400).json({ error: "SMS and Email Confirmation codes are required" });
+  }
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  try {
+    const responseAll = []
+    const verifyTokenEmail = await fetch(`https://mateo.lab.tagroot.io/Agent/Account/VerifyEmail`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ code: confirmationCodeEmail, phoneNr }),
+    });
+    if (!verifyTokenEmail.ok) {
+      const errorText = await verifyTokenEmail.text();
+      console.error("API Error Response:", errorText);
+      responseAll.push(errorText)
+    }
+    const verifyTokenSms = await fetch(`https://mateo.lab.tagroot.io/Agent/Account/VerifyPhoneNr`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ code: confirmationCodeSms, eMail:email }),
+    });
+
+    if (!verifyTokenSms.ok) {
+      const errorText = await verifyTokenSms.text();
+      console.error("API Error Response:", errorText);
+      responseAll.push(errorText)
+    }
+    if(responseAll.lenght<0){
+      return res.status(400).json({ error: responseAll });
+    }
+    
+    const data = await verifyTokenEmail.json();
+    res.json(data);
+  } catch (error) {
+    console.error("Error verifying account:", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });

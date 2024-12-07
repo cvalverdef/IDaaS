@@ -1,24 +1,28 @@
 import React, { useState } from "react";
 
 const Login = () => {
-  const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [credentials, setCredentials] = useState({ userName: "", password: "" });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Assuming Agent is exposed globally
-    if (window.Agent) {
-      window.Agent.login(credentials.email, credentials.password, (response) => {
-        console.log("Login Response:", response);
-        if (response.success) {
-          alert("Login successful!");
-        } else {
-          alert("Login failed. Please try again.");
-        }
-      });
-    } else {
-      console.error("Agent.js is not loaded.");
-    }
+try {
+  // Assuming Agent is exposed globally
+  if (window.AgentAPI) {
+    var response = await window.AgentAPI.Account.Login(credentials.userName,credentials.password,3600);
+     console.log(response)
+      if (response.jwt) {
+        alert("Login successful!");
+      } else {
+        alert("Login failed. Please try again.");
+      }
+   
+  } else {
+    console.error("Agent.js is not loaded.");
+  }
+} catch (error) {
+  alert(error.message)
+}
+    
   };
 
   return (
@@ -26,12 +30,12 @@ const Login = () => {
       <h1 className="text-2xl font-bold mb-6">Login</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Email *</label>
+          <label>User Name *</label>
           <input
-            type="email"
-            value={credentials.email}
+            type="text"
+            value={credentials.userName}
             onChange={(e) =>
-              setCredentials((prev) => ({ ...prev, email: e.target.value }))
+              setCredentials((prev) => ({ ...prev, userName: e.target.value }))
             }
           />
         </div>

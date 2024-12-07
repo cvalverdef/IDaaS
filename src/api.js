@@ -36,6 +36,7 @@ const connectWebSocket = () => {
 // Function to create an account
 const createAccount = async (formData) => {
   try {
+    console.log(formData)
     const response = await axios.post(`${API_URL}/account/create`, formData);
     return response.data;
   } catch (error) {
