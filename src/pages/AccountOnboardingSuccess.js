@@ -13,14 +13,20 @@ const AccountOnboardingSuccess = () => {
     setIsSubmitting(true);
     setErrorMessage("");
 
+    console.log("", state.token);
     try {
       const response = await fetch("http://localhost:5000/verify-account", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-token": state.jwt
+          "x-token": state.token
         },
-        body: JSON.stringify({ confirmationCodeSms, phoneNr: state.phoneNr, confirmationCodeEmail, email: state.email }),
+        body: JSON.stringify({ 
+          confirmationCodeSms, 
+          phoneNr: state.phoneNr, 
+          confirmationCodeEmail, 
+          email: state.email 
+        }),
       });
 
       if (response.status === 200) {
@@ -28,8 +34,11 @@ const AccountOnboardingSuccess = () => {
         console.log("Verification success:", data);
         alert("Account verified successfully!");
       } else {
-        const error = await response.json();
-        setErrorMessage(`Error ${response.status}: ${error.error}`);
+        const errorData = await response.json();
+        setErrorMessage(`Verification failed. Errors: ${errorData.error
+          .map((err) => `${err.type} - ${err.error}`)
+          .join(", ")}`
+      );
       }
     } catch (err) {
       console.error("Verification error:", err);
