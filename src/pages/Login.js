@@ -9,7 +9,6 @@ try {
   // Assuming Agent is exposed globally
   if (window.AgentAPI) {
     var response = await window.AgentAPI.Account.Login(credentials.userName,credentials.password,3600);
-     console.log(response)
       if (response.jwt) {
         alert("Login successful!");
       } else {

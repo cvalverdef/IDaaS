@@ -7,7 +7,7 @@ const socket = io(SOCKET_URL, {
 });
 
 socket.on("connect", () => {
-  console.log("WebSocket connected:", socket.id);
+  console.info("WebSocket connected:", socket.id);
 });
 
 export default socket;
