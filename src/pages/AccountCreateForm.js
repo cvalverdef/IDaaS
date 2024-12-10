@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // To handle navigation
+import { useNavigate } from "react-router-dom"; 
 
-// Utility function to generate a nonce (random string)
 const generateNonce = () => {
-  const array = new Uint8Array(32); // Generate a random 32-byte array
-  window.crypto.getRandomValues(array); // Use the Web Crypto API to generate random values
-  return btoa(String.fromCharCode(...array)); // Convert to base64 string
+  const array = new Uint8Array(32); 
+  window.crypto.getRandomValues(array); 
+  return btoa(String.fromCharCode(...array)); 
 };
 
-// Function to sign data using HMAC SHA-256
 const sign = async (key, data) => {
   const encoder = new TextEncoder();
   const keyData = encoder.encode(key);
@@ -29,7 +27,7 @@ const sign = async (key, data) => {
   );
 
   const signatureArray = new Uint8Array(signature);
-  return btoa(String.fromCharCode(...signatureArray)); // Convert to base64 string
+  return btoa(String.fromCharCode(...signatureArray)); 
 };
 
 const AccountCreateForm = () => {
@@ -42,10 +40,10 @@ const AccountCreateForm = () => {
   const navigate = useNavigate();
 
   const apiKey =
-    "9b8d5e91384b0430065ca3651daf156c3b1973b0abb704ab2873663f49cc3470"; // Your API key for authorization
+    "9b8d5e91384b0430065ca3651daf156c3b1973b0abb704ab2873663f49cc3470"; 
   const secret =
-    "de417718959ab40c6cab3b109f01a6f285a2241da7ce87cb0a5348c853617fb1"; // Your secret key for signature
-  const host = "mateo.lab.tagroot.io"; // API host
+    "de417718959ab40c6cab3b109f01a6f285a2241da7ce87cb0a5348c853617fb1"; 
+  const host = "mateo.lab.tagroot.io"; 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,7 +58,6 @@ const AccountCreateForm = () => {
     try {
       const signature = await sign(secret, s);
 
-      // Prepare the payload
       const payload = {
         userName: username,
         eMail: email,
@@ -69,10 +66,9 @@ const AccountCreateForm = () => {
         apiKey,
         nonce,
         signature,
-        seconds: 3600, // JWT expiry time in seconds
+        seconds: 3600, 
       };
 
-      // Sending the POST request to the external API endpoint
       const response = await fetch(`https://mateo.lab.tagroot.io/Agent/Account/Create`, {
         method: "POST",
         headers: {
@@ -82,12 +78,9 @@ const AccountCreateForm = () => {
         body: JSON.stringify(payload),
       });
 
-      // Handle the API response
       if (response.ok) {
         const responseData = await response.json();
-        console.log("Account created:", responseData);
 
-        // Redirect to success page with confirmation code
         navigate("/verify-account", { state: { confirmationCode: responseData.confirmationCode, phoneNr, email, token: responseData.jwt  } });
       } else {
         const content = await response.text();

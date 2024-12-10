@@ -1,9 +1,7 @@
 import axios from "axios";
 
-// Use environment variable for flexibility
 const API_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api";
 
-// Create Axios instance
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -11,7 +9,6 @@ const api = axios.create({
   },
 });
 
-// Function to establish WebSocket connection
 const connectWebSocket = () => {
   const protocol = window.location.protocol === "https:" ? "wss" : "ws";
   const wsUri = `${protocol}://mateo.lab.tagroot.io/ClientEventsWS`;
@@ -19,7 +16,7 @@ const connectWebSocket = () => {
   const ws = new WebSocket(wsUri);
 
   ws.onopen = () => {
-    console.log("WebSocket connection established.");
+    console.info("WebSocket connection established.");
   };
 
   ws.onerror = (error) => {
@@ -27,16 +24,14 @@ const connectWebSocket = () => {
   };
 
   ws.onmessage = (message) => {
-    console.log("WebSocket message received:", message.data);
+    console.info("WebSocket message received:", message.data);
   };
 
   return ws;
 };
 
-// Function to create an account
 const createAccount = async (formData) => {
   try {
-    console.log(formData)
     const response = await axios.post(`${API_URL}/account/create`, formData);
     return response.data;
   } catch (error) {
@@ -45,18 +40,6 @@ const createAccount = async (formData) => {
   }
 };
 
-// // Create account
-// export const createAccount = async (data) => {
-//   try {
-//     const response = await api.post("/account/create", data);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error in createAccount:", error.response?.data || error.message);
-//     throw error;
-//   }
-// };
-
-// Function to login a user
 const loginUser = async (formData) => {
   try {
     const response = await axios.post(`${API_URL}/users/login`, formData);
@@ -67,7 +50,6 @@ const loginUser = async (formData) => {
   }
 };
 
-// Function to check KYC status
 const checkKYC = async (formData) => {
   try {
     const response = await axios.post(`${API_URL}/users/kyc`, formData);
@@ -78,5 +60,4 @@ const checkKYC = async (formData) => {
   }
 };
 
-// Export all API functions
 export { api, createAccount, loginUser, checkKYC, connectWebSocket };

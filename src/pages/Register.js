@@ -29,7 +29,7 @@ const Register = () => {
 
     if (window.Agent) {
       window.Agent.register(formData, (response) => {
-        console.log("Registration Response:", response);
+        console.info("Registration Response:", response);
         if (response.success) {
           alert("Registration successful!");
         } else {

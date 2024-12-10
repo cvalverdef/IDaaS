@@ -8,10 +8,10 @@ const Onboarding = () => {
     if (window.WebSocket) {
       const socket = new WebSocket("wss://mateo.lab.tagroot.io/ClientEventsWS");
 
-      socket.onopen = () => console.log("WebSocket connected.");
+      socket.onopen = () => console.info("WebSocket connected.");
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        console.log("WebSocket message received:", data);
+        console.info("WebSocket message received:", data);
 
         // Handle KYC updates
         if (data.type === "KYC_UPDATE") {
@@ -24,7 +24,7 @@ const Onboarding = () => {
       };
 
       socket.onerror = (error) => console.error("WebSocket error:", error);
-      socket.onclose = () => console.log("WebSocket disconnected.");
+      socket.onclose = () => console.info("WebSocket disconnected.");
 
       return () => socket.close(); // Clean up on component unmount
     } else {

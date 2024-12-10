@@ -13,7 +13,6 @@ const AccountOnboardingSuccess = () => {
     setIsSubmitting(true);
     setErrorMessage("");
 
-    console.log("", state.token);
     try {
       const response = await fetch("http://localhost:5000/verify-account", {
         method: "POST",
@@ -30,8 +29,6 @@ const AccountOnboardingSuccess = () => {
       });
 
       if (response.status === 200) {
-        const data = await response.json();
-        console.log("Verification success:", data);
         alert("Account verified successfully!");
       } else {
         const errorData = await response.json();
