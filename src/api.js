@@ -14,7 +14,7 @@ const api = axios.create({
 // Function to establish WebSocket connection
 const connectWebSocket = () => {
   const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-  const wsUri = `${protocol}://lab.tagroot.io/ClientEventsWS`;
+  const wsUri = `${protocol}://mateo.lab.tagroot.io/ClientEventsWS`;
 
   const ws = new WebSocket(wsUri);
 

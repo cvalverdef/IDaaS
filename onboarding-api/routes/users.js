@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 const {
   createAccount,
-  createUser,
-  loginUser,
-  getUsers,
-  updateKYCStatus,
-  uploadDocument,
+  // createUser,
+  // loginUser,
+  // getUsers,
+  // updateKYCStatus,
+  // uploadDocument,
 } = require("../controllers/usersController");
 
 // Ensure routes are correctly registered and mapped

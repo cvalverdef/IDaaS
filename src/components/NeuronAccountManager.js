@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 // Use the global Agent object loaded via the script
-const NeuronAgent = window.Agent;
+const NeuronAgent = window.AgentAPI;
 
 if (!NeuronAgent) {
   console.error(

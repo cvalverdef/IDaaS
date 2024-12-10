@@ -14,19 +14,10 @@ import ManageRoles from "./pages/ManageRoles";
 import HomeLoggedIn from './pages/HomeLoggedIn';
 import HomeNotLoggedIn from './pages/HomeNotLoggedIn';
 import Register from './pages/Register';
-import Account from "./pages/Account";
 import NeuronAccountManager from './components/NeuronAccountManager'; 
 import Login from './pages/Login';
-// import ForgotPassword from './pages/ForgotPassword';
-// import ResetPassword from './pages/ResetPassword';
-// import Profile from './pages/Profile
-// import { AuthProvider } from './context/AuthContext';
-// import { ProtectedRoute } from './components/ProtectedRoute
-// import { ToastContainer } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-// import { ToastProvider } from './context/ToastContext';
-// import { ThemeProvider } from './context/ThemeContext';
-
+import AccountOnboardingSuccess from './pages/AccountOnboardingSuccess'; 
+import AccountCreateForm from './pages/AccountCreateForm';
 
 const App = () => {
   // Mock user object
@@ -49,9 +40,10 @@ const App = () => {
             <Route path="/home" element={<HomeLoggedIn />} />
             <Route path="/home-not-logged-in" element={<HomeNotLoggedIn />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/account" element={<Account />} />;
-            <Route path="/neuron-manager" element={<NeuronAccountManager />} /> {/* Add route for NeuronAccountManager */}
+            <Route path="/neuron-manager" element={<NeuronAccountManager />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/verify-account" element={<AccountOnboardingSuccess />} /> 
+            <Route path="/create-account" element={<AccountCreateForm />} />
             {/* Superadmin Routes */}
             {user.isSuperAdmin && (
               <>

@@ -6,7 +6,7 @@ const Onboarding = () => {
 
   useEffect(() => {
     if (window.WebSocket) {
-      const socket = new WebSocket("wss://lab.tagroot.io/ClientEventsWS");
+      const socket = new WebSocket("wss://mateo.lab.tagroot.io/ClientEventsWS");
 
       socket.onopen = () => console.log("WebSocket connected.");
       socket.onmessage = (event) => {

@@ -32,7 +32,7 @@ const Navbar = ({ user }) => {
             </Link>
           </li>
           <li>
-            <Link to="/account" className="hover:text-gray-300 text-sm font-medium">
+            <Link to="/create-account" className="hover:text-gray-300 text-sm font-medium">
               Account
             </Link>
           </li>

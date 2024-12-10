@@ -21,35 +21,39 @@ app.post("/verify-account", async (req, res) => {
   }
 
   try {
-    const responseAll = []
+    const responseAll = [];
+
     const verifyTokenEmail = await fetch(`https://mateo.lab.tagroot.io/Agent/Account/VerifyEmail`, {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       },
-      body: JSON.stringify({ code: confirmationCodeEmail, phoneNr }),
+      body: JSON.stringify({ code: confirmationCodeEmail, eMail: email }),
     });
+
     if (!verifyTokenEmail.ok) {
       const errorText = await verifyTokenEmail.text();
-      console.error("API Error Response:", errorText);
-      responseAll.push(errorText)
+      console.error("Email Verification API Error:", errorText);
+      responseAll.push({ type: "email", errorText });
     }
+
     const verifyTokenSms = await fetch(`https://mateo.lab.tagroot.io/Agent/Account/VerifyPhoneNr`, {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       },
-      body: JSON.stringify({ code: confirmationCodeSms, eMail:email }),
+      body: JSON.stringify({ code: confirmationCodeSms, phoneNr }),
     });
 
     if (!verifyTokenSms.ok) {
       const errorText = await verifyTokenSms.text();
-      console.error("API Error Response:", errorText);
-      responseAll.push(errorText)
+      console.error("SMS Verification API Error:", errorText);
+      responseAll.push({ type: "sms", errorText });
     }
-    if(responseAll.lenght<0){
+
+    if(responseAll.lenght > 0){
       return res.status(400).json({ error: responseAll });
     }
     
