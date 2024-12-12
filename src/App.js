@@ -18,6 +18,7 @@ import Login from "./pages/Login";
 import AccountOnboardingSuccess from "./pages/AccountOnboardingSuccess";
 import AccountCreateForm from "./pages/AccountCreateForm";
 import { getJwt } from "./components/tokenStorage";
+import Recover from "./components/Recover"
 
 const App = () => {
   const [user, setUser] = useState(null); // Initially, no user is logged in
@@ -46,7 +47,7 @@ const App = () => {
               element={<AccountOnboardingSuccess />}
             />
             <Route path="/create-account" element={<AccountCreateForm />} />
-
+            <Route path="/recover" element={<Recover />} />
             <Route
               path="/dashboard"
               element={

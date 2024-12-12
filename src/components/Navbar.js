@@ -37,7 +37,6 @@ const Navbar = ({ user, setUser }) => {
   return (
     <nav className="bg-blue-600 text-white shadow-md">
       <div className="container mx-auto flex items-center justify-between h-16">
-        {/* Logo and Home Redirection */}
         <Link to="/" className="flex items-center space-x-2">
           <img src={logo} alt="IDaaS Logo" className="h-10 w-10" />
           <h1 className="text-lg font-bold">IDaaS</h1>
