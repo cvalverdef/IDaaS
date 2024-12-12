@@ -1,27 +1,40 @@
 import React, { useState } from "react";
+import { expiredIn, saveJwt } from "../components/tokenStorage";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [credentials, setCredentials] = useState({ userName: "", password: "" });
-
+  const [credentials, setCredentials] = useState({
+    userName: "",
+    password: "",
+  });
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-try {
-  // Assuming Agent is exposed globally
-  if (window.AgentAPI) {
-    var response = await window.AgentAPI.Account.Login(credentials.userName,credentials.password,3600);
-      if (response.jwt) {
-        alert("Login successful!");
+    try {
+      if (window.AgentAPI) {
+        var response = await window.AgentAPI.Account.Login(
+          credentials.userName,
+          credentials.password,
+          3600
+        );
+        if (response.jwt) {
+          expiredIn(response.expires)
+          var accountInfo = await window.AgentAPI.Account.Info();
+          if (accountInfo) {
+            localStorage.setItem("user", JSON.stringify(accountInfo));
+          }
+          saveJwt(response.jwt);
+          navigate("/dashboard");
+          navigate(0);
+        } else {
+          alert("Login failed. Please try again.");
+        }
       } else {
-        alert("Login failed. Please try again.");
+        console.error("Agent.js is not loaded.");
       }
-   
-  } else {
-    console.error("Agent.js is not loaded.");
-  }
-} catch (error) {
-  alert(error.message)
-}
-    
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
@@ -48,7 +61,10 @@ try {
             }
           />
         </div>
-        <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded">
+        <button
+          type="submit"
+          className="bg-blue-600 text-white py-2 px-4 rounded"
+        >
           Login
         </button>
       </form>

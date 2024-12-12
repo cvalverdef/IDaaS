@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { getJwt } from "./tokenStorage"
 
 const AdminMenu = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  if (!user.isSuperAdmin) return null;
+  const [isLogged, setIsLogged] = useState(null);
+
+  useEffect(() => {
+    setIsLogged(getJwt());
+  }, []);
+
+  if (!isLogged) return null;
 
   return (
     <div className="relative">
