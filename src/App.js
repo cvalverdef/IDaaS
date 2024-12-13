@@ -19,6 +19,7 @@ import AccountOnboardingSuccess from "./pages/AccountOnboardingSuccess";
 import AccountCreateForm from "./pages/AccountCreateForm";
 import { getJwt } from "./components/tokenStorage";
 import Recover from "./components/Recover"
+import CryptoAlgorithms from "./pages/CryptoAlgorithms";
 
 const App = () => {
   const [user, setUser] = useState(null); // Initially, no user is logged in
@@ -93,6 +94,14 @@ const App = () => {
               element={
                 <PrivateRoute jwt={getJwt()}>
                   <HomeLoggedIn />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/crypto-algorithms"
+              element={
+                <PrivateRoute jwt={getJwt()}>
+                  <CryptoAlgorithms />
                 </PrivateRoute>
               }
             />
