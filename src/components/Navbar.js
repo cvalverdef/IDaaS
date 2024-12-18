@@ -33,8 +33,7 @@ const Navbar = ({ user, setUser }) => {
 
   const handleMouseEnter = async () => {
     try {
-      if (window.AgentAPI) {
-        const userInfo = await window.AgentAPI.Account.Info();
+        const userInfo = JSON.parse(localStorage.getItem("user"))
         setUserDetails({
           userName: userInfo.userName || "N/A",
           created: new Date(userInfo.created).toLocaleString() || "N/A",
@@ -42,9 +41,6 @@ const Navbar = ({ user, setUser }) => {
           phoneNr: userInfo.phoneNr || "N/A",
         });
         setTooltipVisible(true);
-      } else {
-        console.error("AgentAPI is not available.");
-      }
     } catch (error) {
       console.error("Failed to load user details:", error);
     }

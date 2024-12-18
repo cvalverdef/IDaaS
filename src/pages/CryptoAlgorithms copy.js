@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { getCryptoAlgorithms, createCryptoKey, getPublicKey } from "../services/cryptoServices";
 
 const CryptoAlgorithms = () => {
   const [algorithms, setAlgorithms] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [keyParams, setKeyParams] = useState({ localName: "", keyPassword: "", accountPassword: "", keyId: "" });
+  const [keyParams, setKeyParams] = useState({ localName: "", keyPassword: "", accountPassword: "" });
   const [keyResult, setKeyResult] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const [publicKey, setPublicKey] = useState("");
-  const navigate = useNavigate();
+  const [publicKey, setPublicKey] = useState("")
 
   useEffect(() => {
     (async () => {
@@ -24,23 +22,26 @@ const CryptoAlgorithms = () => {
     (async () => {
       const result = await getPublicKey();
       if (result?.key) {
-        setPublicKey(result);
+        setResultPublicKey(result)
       }
     })();
   }, []);
 
+  const setResultPublicKey = async (e) => {
+    setPublicKey(e)
+  }
   const handleCreateKey = async (e) => {
     e.preventDefault();
     setErrorMessage("");
 
-    const { localName, keyPassword, accountPassword, keyId } = keyParams;
-    if (!localName || !keyPassword || !accountPassword || !keyId) {
+    const { localName, keyPassword, accountPassword } = keyParams;
+    if (!localName || !keyPassword || !accountPassword) {
       setErrorMessage("All fields are required.");
       return;
     }
 
     try {
-      const result = await createCryptoKey({ localName, keyPassword, accountPassword, keyId });
+      const result = await createCryptoKey({ localName, keyPassword, accountPassword });
       if (result) {
         setKeyResult(result);
         setErrorMessage("");
@@ -50,14 +51,6 @@ const CryptoAlgorithms = () => {
     } catch (error) {
       setErrorMessage("Error creating crypto key: " + error.message);
     }
-  };
-
-  const navigateToValidatePNr = () => {
-    const inheritedData = {
-      keyParams,
-      algorithms,
-    };
-    navigate("/validate-pnr", { state: inheritedData });
   };
 
   return (
@@ -96,15 +89,6 @@ const CryptoAlgorithms = () => {
               </option>
             ))}
           </select>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Key Id:</label>
-          <input
-            type="text"
-            value={keyParams.keyId}
-            onChange={(e) => setKeyParams({ ...keyParams, keyId: e.target.value })}
-            className="w-full border rounded px-2 py-1"
-          />
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Key Password:</label>
@@ -147,18 +131,10 @@ const CryptoAlgorithms = () => {
           <pre className="bg-gray-100 p-2 rounded">{JSON.stringify(publicKey, null, 2)}</pre>
         </div>
       )}
-
-      {/* New Buttons */}
-      <div className="mt-8">
-        <button
-          onClick={navigateToValidatePNr}
-          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-        >
-          Validate PNr
-        </button>
-      </div>
     </div>
   );
 };
+
+
 
 export default CryptoAlgorithms;

@@ -20,6 +20,30 @@ import AccountCreateForm from "./pages/AccountCreateForm";
 import { getJwt } from "./components/tokenStorage";
 import Recover from "./components/Recover"
 import CryptoAlgorithms from "./pages/CryptoAlgorithms";
+import ManageContracts from "./pages/ManageContracts";
+import ValidatePNr from "./pages/ValidatePNr";
+import GetApplicationAttributes from "./pages/GetApplicationAttributes";
+import ApplyId from "./pages/ApplyId";
+import AddIdAttachment from "./pages/AddIdAttachments";
+import ReadyForApproval from "./pages/ReadyForApproval";
+import ServiceProvidersReview from "./pages/ServiceProvidersReview";
+// import SelectReviewService from "./components/SelectReviewService";
+// import AuthorizeAccessToId from "./components/AuthorizeAccessToId";
+// import PetitionPeerReview from "./components/PetitionPeerReview";
+// import PetitionId from "./components/PetitionId";
+// import PetitionSignature from "./components/PetitionSignature";
+import CreateContract from "./pages/CreateContract";
+// import GetIdentity from "./components/GetIdentity";
+// import GetContract from "./components/GetContract";
+import SignContract from "./pages/SignContract";
+// import SignData from "./components/SignData";
+// import GetIdentities from "./components/GetIdentities";
+// import GetCreatedContracts from "./components/GetCreatedContracts";
+// import AuthorizeAccessToContract from "./components/AuthorizeAccessToContract";
+import AuthorizeAndPetition from "./pages/AuthorizeAndPetition";
+import PetitionActions from "./pages/PetitionActions";
+import IdentityManagement from "./pages/IdentityManagement";
+import SignAndAuthorize from "./pages/SignAndAuthorize";
 
 const App = () => {
   const [user, setUser] = useState(null); // Initially, no user is logged in
@@ -27,7 +51,7 @@ const App = () => {
     return jwt ? children : <navigate to="/login" />;
   };
   useEffect(() => {
-    const Info = localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):[]
+    const Info = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : []
     setUser(Info);
   }, []);
   return (
@@ -105,6 +129,75 @@ const App = () => {
                 </PrivateRoute>
               }
             />
+            <Route
+              path="/manage-contracts"
+              element={
+                <PrivateRoute jwt={getJwt()}>
+                  <ManageContracts />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/validate-pnr"
+              element={
+                <PrivateRoute jwt={getJwt()}>
+                  <ValidatePNr />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/getappattributes"
+              element={
+                <PrivateRoute jwt={getJwt()}>
+                  <GetApplicationAttributes />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/apply-id"
+              element={
+                <PrivateRoute jwt={getJwt()}>
+                  <ApplyId />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/add-id-attachment"
+              element={
+                <PrivateRoute jwt={getJwt()}>
+                  <AddIdAttachment />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/ready-approval"
+              element={
+                <PrivateRoute jwt={getJwt()}>
+                  <ReadyForApproval />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/service-providers-review"
+              element={<PrivateRoute jwt={getJwt()}><ServiceProvidersReview /></PrivateRoute>}
+            />
+            {/* <Route path="/select-review-service" element={<PrivateRoute jwt={getJwt()}><SelectReviewService /></PrivateRoute>} />
+            <Route path="/authorize-access-id" element={<PrivateRoute jwt={getJwt()}><AuthorizeAccessToId /></PrivateRoute>} />
+            <Route path="/petition-peer-review" element={<PrivateRoute jwt={getJwt()}><PetitionPeerReview /></PrivateRoute>} />
+            <Route path="/petition-id" element={<PrivateRoute jwt={getJwt()}><PetitionId /></PrivateRoute>} />
+            <Route path="/petition-signature" element={<PrivateRoute jwt={getJwt()}><PetitionSignature /></PrivateRoute>} /> */}
+            <Route path="/create-contract" element={<PrivateRoute jwt={getJwt()}><CreateContract /></PrivateRoute>} />
+            {/* <Route path="/get-identity" element={<PrivateRoute jwt={getJwt()}><GetIdentity /></PrivateRoute>} />
+            <Route path="/get-contract" element={<PrivateRoute jwt={getJwt()}><GetContract /></PrivateRoute>} /> */}
+            <Route path="/sign-contract" element={<PrivateRoute jwt={getJwt()}><SignContract /></PrivateRoute>} />
+            {/* <Route path="/sign-data" element={<PrivateRoute jwt={getJwt()}><SignData /></PrivateRoute>} />
+            <Route path="/get-identities" element={<PrivateRoute jwt={getJwt()}><GetIdentities /></PrivateRoute>} />
+            <Route path="/get-created-contracts" element={<PrivateRoute jwt={getJwt()}><GetCreatedContracts /></PrivateRoute>} />
+            <Route path="/authorize-access-contract" element={<PrivateRoute jwt={getJwt()}><AuthorizeAccessToContract /></PrivateRoute>}/> */} 
+            <Route path="/authorize-petition" element={<PrivateRoute jwt={getJwt()}><AuthorizeAndPetition /></PrivateRoute>} />
+            <Route path="/petition-actions" element={<PrivateRoute jwt={getJwt()}><PetitionActions /></PrivateRoute>} />
+            <Route path="/identity-management" element={<PrivateRoute jwt={getJwt()}><IdentityManagement /></PrivateRoute>} />
+            <Route path="/sign-and-authorize" element={<PrivateRoute jwt={getJwt()}><SignAndAuthorize /></PrivateRoute>} />
           </Routes>
         </main>
         <Footer />

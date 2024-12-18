@@ -3,11 +3,19 @@ import { recoverAccount } from "../components/authService";
 import { useNavigate } from "react-router-dom";
 
 const AccountCreateForm = () => {
+
+  const apiKey =
+    "9b8d5e91384b0430065ca3651daf156c3b1973b0abb704ab2873663f49cc3470";
+  const secret =
+    "de417718959ab40c6cab3b109f01a6f285a2241da7ce87cb0a5348c853617fb1";
+
   const [accountDetails, setAccountDetails] = useState({
     email: "",
     userName: "",
     password: "",
   });
+  const [phoneNr, setPhoneNr] = useState("");
+  const [password, setPassword] = useState("");
   const [isRecovering, setIsRecovering] = useState(false);
   const [recoveryEmail, setRecoveryEmail] = useState("");
   const [recoveryMessage, setRecoveryMessage] = useState("");
@@ -30,14 +38,18 @@ const AccountCreateForm = () => {
     e.preventDefault();
     try {
       if (window.AgentAPI) {
-        const response = await window.AgentAPI.Account.Create({
-          email: accountDetails.email,
-          userName: accountDetails.userName,
-          password: accountDetails.password,
-        });
-        if (response.success) {
-          alert("Account created successfully. Please log in.");
-          navigate("/login");
+        const response = await window.AgentAPI.Account.Create(
+          accountDetails.userName,
+          accountDetails.email,
+          phoneNr,
+          password,
+          apiKey,
+          secret,
+          3600
+        );
+        if (response  ) {
+          alert("Account created successfully. Please verify account.");
+          navigate("/verify-account", { state: { confirmationCode: "", phoneNr, email: accountDetails.email, token: response.jwt  } });
         } else {
           alert(response.message || "Failed to create account. Please try again.");
         }
@@ -86,14 +98,18 @@ const AccountCreateForm = () => {
             <label>Password *</label>
             <input
               type="password"
-              value={accountDetails.password}
-              onChange={(e) =>
-                setAccountDetails((prev) => ({
-                  ...prev,
-                  password: e.target.value,
-                }))
+              value={password}
+              onChange={(e) => setPassword(e.target.value)
               }
               required
+            />
+          </div>
+          <div>
+            <label>Phone Number:</label>
+            <input
+              type="text"
+              value={phoneNr}
+              onChange={(e) => setPhoneNr(e.target.value)}
             />
           </div>
           <button
