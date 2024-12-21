@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getServiceProvidersForIdReview, selectReviewService } from "../services/legalServices";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { use } from "react";
 
 const ServiceProvidersReview = () => {
   const location = useLocation();
@@ -15,8 +16,6 @@ const ServiceProvidersReview = () => {
   const handleFetchProviders = async () => {
     try {
       const result = await getServiceProvidersForIdReview(location.state.legalId);
-      setServiceId(result?.reviewerId || []);
-      setProviders(result?.Providers || []);
       setError("");
     } catch (err) {
       setError("Failed to fetch service providers.");
@@ -35,22 +34,14 @@ const ServiceProvidersReview = () => {
     }
   };
   useEffect(() => {
+    setServiceId(location.state.Identity.serverSignature.value);
+    setProviders(location.state.Identity.status.provider);
     handleFetchProviders()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
     <div>
-      <h2>Service Providers Review</h2>
-      <label>
-        Service ID:
-        <input
-          type="text"
-          value={serviceId}
-          onChange={(e) => setServiceId(e.target.value)}
-          required
-        />
-      </label>
       <button
         onClick={handleFetchProviders}
         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
@@ -58,7 +49,7 @@ const ServiceProvidersReview = () => {
         Fetch Providers
       </button>
 
-      {providers.length > 0 && (
+      {/* {providers.length > 0 && (
         <>
           <h3>Select a Provider:</h3>
           <select
@@ -66,11 +57,11 @@ const ServiceProvidersReview = () => {
             onChange={(e) => setSelectedProvider(e.target.value)}
           >
             <option value="">-- Select Provider --</option>
-            {providers.map((provider) => (
+            {/* {providers.map((provider) => (
               <option key={provider.id} value={provider.id}>
                 {provider.name}
               </option>
-            ))}
+            ))} 
           </select>
           <button
             onClick={handleSelectProvider}
@@ -79,7 +70,7 @@ const ServiceProvidersReview = () => {
             Select Review Service
           </button>
         </>
-      )}
+      )} */}
 
       {response && <pre>{JSON.stringify(response, null, 2)}</pre>}
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -88,9 +79,11 @@ const ServiceProvidersReview = () => {
         <Link to="/ready-approval" className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
           Ready For Approval
         </Link>
-        <Link to="/authorize-petition" className="ml-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+        <button onClick={() => navigate("/authorize-petition", {
+          state: location.state
+        })} className="ml-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
           Authorize Access
-        </Link>
+        </button>
       </div>
     </div>
   );

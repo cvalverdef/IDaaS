@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { validatePNr } from "../services/legalServices";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ValidatePNr = () => {
   const [countryCode, setCountryCode] = useState("");
   const [pnr, setPnr] = useState("");
   const [response, setResponse] = useState(null);
   const [error, setError] = useState("");
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -50,21 +50,25 @@ const ValidatePNr = () => {
       {response && <pre>{JSON.stringify(response, null, 2)}</pre>}
       {error && <p style={{ color: "red" }}>{error}</p>}
       <div className="mt-4">
-        <Link
-          to="/crypto-algorithms"
-          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+        <button
+          onClick={() => navigate("/crypto-algorithms")}
+          className="bg-blue-500 text-white px-4 py-2 rounded"
         >
           Crypto Algorithms
-        </Link>
-        <Link
-          to={{
-            pathname: "/getappattributes",
-            state: { countryCode, pnr },
-          }}
-          className="ml-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+        </button>
+        &nbsp;
+        &nbsp;
+        <button
+          onClick={() => navigate("/apply-id", { state: { countryCode, pnr } })}
+          className={
+            response
+              ? "bg-blue-500 text-white px-4 py-2 rounded"
+              : "bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+          }
+          disabled={!response}
         >
-          Get App Attributes
-        </Link>
+          Apply Id
+        </button>
       </div>
     </div>
   );

@@ -152,7 +152,8 @@ const CryptoAlgorithms = () => {
       <div className="mt-8">
         <button
           onClick={navigateToValidatePNr}
-          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+          className={keyResult?"bg-blue-500 text-white px-4 py-2 rounded":"bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"}
+          disabled={!keyResult}
         >
           Validate PNr
         </button>

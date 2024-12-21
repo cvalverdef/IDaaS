@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { addIdAttachment, readyForApproval } from "../services/legalServices";
 import { getCryptoAlgorithms } from "../services/cryptoServices";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const AddIdAttachment = () => {
   const [localName, setLocalName] = useState("");
@@ -17,15 +17,25 @@ const AddIdAttachment = () => {
   const [error, setError] = useState("");
   const [algorithms, setAlgorithms] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
   const handleApproval = async (e) => {
     try {
       await readyForApproval(legalId);
-      navigate("/service-providers-review", {state:{response}})
+      navigate("/service-providers-review", { state: { ...response, 
+        localName,
+        namespace,
+        keyId,
+        keyPassword,
+        accountPassword,
+        legalId: response?.Identity?.id || "", 
+       } })
     } catch (error) {
       alert(`Approval Error: ${error}`)
-      navigate("/ready-approval", {states:{
-        legalId
-      }})
+      navigate("/ready-approval", {
+        states: {
+          legalId
+        }
+      })
     }
 
   }
@@ -78,76 +88,26 @@ const AddIdAttachment = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      const result = await getCryptoAlgorithms();
-      if (result?.Algorithms) {
-        setAlgorithms(result.Algorithms);
-      } else {
-        console.error("No valid data found in the response.");
-      }
-    })();
+    console.log(location.state);
+    setLocalName(location.state.localName);
+    setNamespace(location.state.namespace);
+    setKeyId(location.state.keyId);
+    setAccountPassword(location.state.accountPassword);
+    setKeyPassword(location.state.keyPassword);
+    setLegalId(location.state.legalId);
+      (async () => {
+        const result = await getCryptoAlgorithms();
+        if (result?.Algorithms) {
+          setAlgorithms(result.Algorithms);
+        } else {
+          console.error("No valid data found in the response.");
+        }
+      })();
   }, []);
 
   return (
     <div className="container mx-auto p-6">
       <h2>Add ID Attachment</h2>
-      <div className="block text-sm font-medium mb-1">
-        <label className="block text-sm font-medium mb-1">Algorithm:</label>
-        <select
-          value={localName}
-          onChange={(e) => {
-            setLocalName(e.target.value);
-            const namespaceObject = algorithms.find(
-              (item) => item.localName === e.target.value
-            );
-            setNamespace(namespaceObject.namespace);
-          }}
-          className="w-full border rounded px-2 py-1"
-        >
-          <option value="">Select Algorithm</option>
-          {algorithms.map((algo, index) => (
-            <option key={index} value={algo.localName}>
-              {algo.localName}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="block text-sm font-medium mb-1">
-        <label className="block font-medium">Key ID:</label>
-        <input
-          type="text"
-          value={keyId}
-          onChange={(e) => setKeyId(e.target.value)}
-          className="w-full border rounded px-2 py-1"
-        />
-      </div>
-      <div className="block text-sm font-medium mb-1">
-        <label className="block font-medium">Key Password:</label>
-        <input
-          type="password"
-          value={keyPassword}
-          onChange={(e) => setKeyPassword(e.target.value)}
-          className="w-full border rounded px-2 py-1"
-        />
-      </div>
-      <div className="block text-sm font-medium mb-1">
-        <label className="block font-medium">Account Password:</label>
-        <input
-          type="password"
-          value={accountPassword}
-          onChange={(e) => setAccountPassword(e.target.value)}
-          className="w-full border rounded px-2 py-1"
-        />
-      </div>
-      <div className="block text-sm font-medium mb-1">
-        <label className="block font-medium">Legal ID:</label>
-        <input
-          type="text"
-          value={legalId}
-          onChange={(e) => setLegalId(e.target.value)}
-          className="w-full border rounded px-2 py-1"
-        />
-      </div>
       <div className="block text-sm font-medium mb-1">
         <label className="block font-medium">File Attachment:</label>
         <input

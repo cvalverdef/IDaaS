@@ -11,7 +11,7 @@ const ReadyForApproval = () => {
   const [error, setError] = useState("");
   useEffect(() => {
     setLegalId(location?.states?.legalId | "")
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const handleReadyForApproval = async () => {
     try {
@@ -19,7 +19,7 @@ const ReadyForApproval = () => {
       setResponse(result);
       setError("");
       navigate("/service-providers-review", {
-        state: { legalId }, 
+        state: { legalId },
       });
     } catch (err) {
       setError("Failed to mark ready for approval.");
@@ -58,15 +58,16 @@ const ReadyForApproval = () => {
         >
           Add ID Attachment
         </Link>
-        <Link
-          to={{
-            pathname: "/service-providers-review",
-            state: { legalId },
+        <button
+          onClick={() => {
+            navigate("/service-providers-review", {
+              state: location.state,
+            })
           }}
           className="ml-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
         >
           Service Providers Review
-        </Link>
+        </button>
       </div>
     </div>
   );

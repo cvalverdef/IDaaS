@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   authorizeAccessToId,
   petitionPeerReview,
 } from "../services/legalServices";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const AuthorizeAndPetition = () => {
   const [legalId, setLegalId] = useState("");
@@ -11,10 +11,12 @@ const AuthorizeAndPetition = () => {
   const [petitionResponse, setPetitionResponse] = useState(null);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const [remoteId, setRemoteId] = useState("");
 
   const handleAuthorizeAccess = async () => {
     try {
-      const result = await authorizeAccessToId(legalId);
+      const result = await authorizeAccessToId(legalId, remoteId, false);
       setAccessResponse(result);
       setError("");
     } catch (err) {
@@ -33,18 +35,17 @@ const AuthorizeAndPetition = () => {
     }
   };
 
+  useEffect(() => {
+    setLegalId(location.state.legalId)
+    const objectJID= location.state.Identity.property.find((p) => p.name === "JID")
+    if (objectJID) {
+      setRemoteId(objectJID.value)
+    }
+  }, [])
+
   return (
     <div>
       <h2>Authorize Access & Petition Review</h2>
-      <label>
-        Legal ID:
-        <input
-          type="text"
-          value={legalId}
-          onChange={(e) => setLegalId(e.target.value)}
-          required
-        />
-      </label>
       <button
         onClick={handleAuthorizeAccess}
         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"

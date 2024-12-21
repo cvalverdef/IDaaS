@@ -15,7 +15,6 @@ const ApplyId = () => {
   const navigate = useNavigate();
   const [algorithms, setAlgorithms] = useState([]);
 
-
   useEffect(() => {
      (async () => {
           const result = await getCryptoAlgorithms();
@@ -56,6 +55,7 @@ const ApplyId = () => {
 
   const navigateToAddAttachment = () => {
     // Pass necessary inherited data
+    console.log(response.Identity.id)
     navigate("/add-id-attachment", {
       state: {
         localName,
@@ -63,6 +63,7 @@ const ApplyId = () => {
         keyId,
         keyPassword,
         accountPassword,
+        legalId: response?.Identity?.id || "", 
       },
     });
   };
@@ -154,14 +155,15 @@ const ApplyId = () => {
 
       <div className="mt-6 space-x-4">
         <button
-          onClick={() => navigate("/getappattributes")}
-          className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+          onClick={() => navigate("/validate-pnr")}
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
         >
-          Get App Attributes
+         Validate PNr
         </button>
         <button
           onClick={navigateToAddAttachment}
-          className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+          className={response?"bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600": "bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"}
+          disabled={!response}
         >
           Add ID Attachment
         </button>
