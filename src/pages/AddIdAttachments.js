@@ -20,7 +20,7 @@ const AddIdAttachment = () => {
   const handleApproval = async (e) => {
     try {
       await readyForApproval(legalId);
-      navigate("/service-providers-review")
+      navigate("/service-providers-review", {state:{response}})
     } catch (error) {
       alert(`Approval Error: ${error}`)
       navigate("/ready-approval", {states:{

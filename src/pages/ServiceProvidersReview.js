@@ -14,9 +14,9 @@ const ServiceProvidersReview = () => {
   // Fetch service providers
   const handleFetchProviders = async () => {
     try {
-      const result = await getServiceProvidersForIdReview(location.states.legalId);
+      const result = await getServiceProvidersForIdReview(location.state.legalId);
       setServiceId(result?.reviewerId || []);
-      setProviders("???");
+      setProviders(result?.Providers || []);
       setError("");
     } catch (err) {
       setError("Failed to fetch service providers.");

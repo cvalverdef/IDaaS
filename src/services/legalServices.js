@@ -119,7 +119,7 @@ export const readyForApproval = async (legalId) => {
  *
  * @returns {Providers: { id: String, type: String,name: String, reviewerId: String,external: Boolean,iconUrl: String,iconWidth: Integer,iconHeight: Integer}} || {[]}
  */
-export const getServiceProvidersForIdReview = async (legalId) => {
+export const getServiceProvidersForIdReview = async (legalId = null) => {
   try {
     return AgentAPI.GetServiceProvidersForIdReview(legalId);
   } catch (error) {
