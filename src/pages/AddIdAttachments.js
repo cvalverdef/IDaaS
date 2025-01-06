@@ -15,7 +15,7 @@ const AddIdAttachment = () => {
   const [contentType, setContentType] = useState("");
   const [response, setResponse] = useState(null);
   const [error, setError] = useState("");
-  const [algorithms, setAlgorithms] = useState([]);
+  const [_algorithms, setAlgorithms] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const handleApproval = async (e) => {

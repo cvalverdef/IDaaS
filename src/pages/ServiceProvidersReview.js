@@ -16,6 +16,7 @@ const ServiceProvidersReview = () => {
   const handleFetchProviders = async () => {
     try {
       const result = await getServiceProvidersForIdReview(location.state.legalId);
+      console.log(result);
       setError("");
     } catch (err) {
       setError("Failed to fetch service providers.");
@@ -30,13 +31,16 @@ const ServiceProvidersReview = () => {
       setError("");
       navigate("/authorize-access"); // Proceed to next step
     } catch (err) {
+      console.log(err);
       setError("Failed to select review service.");
     }
   };
   useEffect(() => {
-    setServiceId(location.state.Identity.serverSignature.value);
-    setProviders(location.state.Identity.status.provider);
-    handleFetchProviders()
+    setServiceId(location?.state?.Identity?.serverSignature?.value);
+    setProviders(location?.state?.Identity?.status?.provider);
+    console.log(serviceId, providers);
+    handleFetchProviders();
+    handleSelectProvider();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

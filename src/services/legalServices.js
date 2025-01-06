@@ -135,6 +135,7 @@ export const getServiceProvidersForIdReview = async (legalId = null) => {
  */
 export const selectReviewService = async (ServiceId, ServiceProvider) => {
   try {
+    console.log(ServiceId, ServiceProvider);
     return AgentAPI.SelectReviewService(ServiceId, ServiceProvider);
   } catch (error) {
     console.error(error);

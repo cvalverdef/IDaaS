@@ -44,6 +44,9 @@ const CryptoAlgorithms = () => {
       if (result) {
         setKeyResult(result);
         setErrorMessage("");
+        setTimeout(() => {
+          navigate("/validate-pnr", { state: {...result, ...keyParams } });
+        }, 3000)
       } else {
         setErrorMessage("Failed to create the crypto key. Please check your inputs.");
       }
@@ -52,13 +55,13 @@ const CryptoAlgorithms = () => {
     }
   };
 
-  const navigateToValidatePNr = () => {
-    const inheritedData = {
-      keyParams,
-      algorithms,
-    };
-    navigate("/validate-pnr", { state: inheritedData });
-  };
+  // const navigateToValidatePNr = () => {
+  //   const inheritedData = {
+  //     keyParams,
+  //     algorithms,
+  //   };
+  //   navigate("/validate-pnr", { state: inheritedData });
+  // };
 
   return (
     <div className="container mx-auto py-8">
@@ -148,7 +151,7 @@ const CryptoAlgorithms = () => {
         </div>
       )}
 
-      {/* New Buttons */}
+      {/* New Buttons 
       <div className="mt-8">
         <button
           onClick={navigateToValidatePNr}
@@ -157,7 +160,7 @@ const CryptoAlgorithms = () => {
         >
           Validate PNr
         </button>
-      </div>
+      </div>*/}
     </div>
   );
 };

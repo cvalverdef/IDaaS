@@ -64,6 +64,7 @@ const ApplyId = () => {
         keyPassword,
         accountPassword,
         legalId: response?.Identity?.id || "", 
+        ...response
       },
     });
   };

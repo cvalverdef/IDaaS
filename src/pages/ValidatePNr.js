@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { validatePNr } from "../services/legalServices";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ValidatePNr = () => {
   const [countryCode, setCountryCode] = useState("");
@@ -8,15 +8,23 @@ const ValidatePNr = () => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const result = await validatePNr(countryCode, pnr);
       setResponse(result);
+      setTimeout(() => {
+        navigate("/apply-id", { state: {...state,countryCode, pnr } })
+      }, 3000)
     } catch (err) {
       setError("Failed to validate PNr.");
     }
   };
+
+
 
   return (
     <div>
@@ -51,14 +59,14 @@ const ValidatePNr = () => {
       {error && <p style={{ color: "red" }}>{error}</p>}
       <div className="mt-4">
         <button
-          onClick={() => navigate("/crypto-algorithms")}
+          onClick={() => navigate("/crypto-algorithms", {state})}
           className="bg-blue-500 text-white px-4 py-2 rounded"
         >
           Crypto Algorithms
         </button>
         &nbsp;
         &nbsp;
-        <button
+        {/* <button
           onClick={() => navigate("/apply-id", { state: { countryCode, pnr } })}
           className={
             response
@@ -68,7 +76,7 @@ const ValidatePNr = () => {
           disabled={!response}
         >
           Apply Id
-        </button>
+        </button> */}
       </div>
     </div>
   );
